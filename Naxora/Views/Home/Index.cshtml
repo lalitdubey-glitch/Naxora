@@ -1,0 +1,76 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<style>
+    .category-scroll {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        gap: 12px;
+        padding: 10px 4px;
+        scroll-behavior: smooth;
+        scrollbar-width: none;    
+        
+    }
+
+        .category-scroll::-webkit-scrollbar {
+            display: none;  
+        }
+
+        .category-scroll .cat-item {
+            flex: 0 0 auto;
+            width: 100px;
+        }
+
+    .subcat-scroll {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        gap: 12px;
+        padding: 10px 4px;
+        scroll-behavior: smooth;
+        scrollbar-width: none; 
+    }
+
+        .subcat-scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        .subcat-scroll .subcat-item {
+            flex: 0 0 auto;
+            width: 100px;
+        }
+</style>
+
+<input type="text" id="hdnUserId" value="@User.FindFirst("UserId")?.Value" hidden/> 
+
+<div class="container">
+    <div id="carouselExampleInterval" class="carousel slide"  data-bs-ride="carousel" data-bs-pause="false">
+        <div class="carousel-inner">
+            <div class="carousel-item active" data-bs-interval="2000">
+                <img src="~/slider/hero1.png" class="d-block w-100" alt="..." style="max-height:550px; object-fit:cover;">
+            </div>
+            <div class="carousel-item" data-bs-interval="2000">
+                <img src="~/slider/hero2.jpg" class="d-block w-100" alt="..." style="max-height:550px; object-fit:cover;">
+            </div>
+            <div class="carousel-item">
+                <img src="~/slider/hero1.png" class="d-block w-100" alt="..." style="max-height:550px; object-fit:cover;">
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+
+    <div class="category-scroll my-3" id="AllCategory"></div>
+
+    <div class="subcat-scroll my-3" id="AllSubCategory"></div>
+
+    <div class="row g-4 my-3" id="AllProducts">    </div>
+</div> 

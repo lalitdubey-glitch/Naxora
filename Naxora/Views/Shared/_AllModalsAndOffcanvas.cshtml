@@ -1,0 +1,124 @@
+﻿<!--Send OTP Modal -->
+<div class="modal fade" id="SendOTPModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="SendOTPLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="SendOTPLabel">Send OTP</h1> 
+            </div>
+            <div class="modal-body">
+                <form method="post">
+                    <input type="email" name="email" id="email" class="form-control" placeholder="" readonly   />
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="btn_sendOTP">Send OTP</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Verify OTP Modal -->
+<div class="modal fade" id="VerifyOTPModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="VerifyOtpLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="VerifyOtpLabel">Verify OTP</h1>
+            </div>
+            <div class="modal-body">
+                <form method="post">
+                    <input type="text" name="otp" id="otp" class="form-control" placeholder="Enter OTP" />
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btn_VerifyOTP">Verify OTP</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Change Password OTP Modal -->
+<div class="modal fade" id="ChangePassModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="ChangePassLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="ChangePassLabel">Change Password</h1>
+            </div>
+            <div class="modal-body">
+                <form method="post">
+                    <input type="password" name="pass" id="pass" class="form-control" placeholder="Enter New Password" />
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btn_ChangePass">Change Password</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+ 
+ 
+
+@* User Info Offcanva *@
+
+<div class="offcanvas offcanvas-end" tabindex="-1" id="userInfoOffcanvas" aria-labelledby="userInfoOffcanvas">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="userInfoOffcanvasTitle">
+            <img src="~/usericon/user.gif" height="50px" width="50px" /> 
+            <span></span>
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body" id="UserDetails">  </div>
+    <div class="offcanvas-body">
+        <input type="button" value="Change Password" class="btn btn-outline-primary" id="btn_changePass" data-bs-toggle="modal" data-bs-target="#SendOTPModal" />
+        <input type="button" value="Edit" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#EditUserDetailstModal" id="btn_editUserModal" />
+        <a class="btn btn-outline-danger" asp-area="" asp-controller="Home" asp-action="Logout">Logout</a>
+    </div>
+</div>
+
+@* Cart Items Offcanva *@
+
+<div class="offcanvas offcanvas-end" tabindex="-1" id="CartItemsOffcanvas" aria-labelledby="CartItemsOffcanvas">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="CartItemsOffcanvasTitle">
+            <img src="~/usericon/user.gif" height="50px" width="50px" /> 
+            <span>
+                <input type="button" class="btn btn-dark" id="btn_buy_all" value="Buy All"/>
+            </span>
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body" id="CartItems">  </div>
+    
+</div>
+
+@* Edit User Details *@
+
+<div class="modal fade" id="EditUserDetailstModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="EditUserDetailsLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="EditUserDetailsLabel">Edit Details</h1> 
+            </div>
+            <div class="modal-body">
+                <form method="post" id="EditUserForm"> 
+                    <input type="text" name="U_name" id="name" placeholder="Edit Your Name" class="form-control mb-3" />
+                    <input type="text" name="pincode" id="pincode" class="form-control mb-3" placeholder="Enter Pincode"/>
+                    <input type="text" name="state" id="state" class="form-control mb-3" readonly/>
+                    <input type="text" name="dist" id="dist"  readonly class="form-control mb-3"/>
+                     
+                    <select class="form-select mb-3" id="vill" name="vill">
+                        <option disabled>Select Village</option> 
+                    </select>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <input type="button" id="btn_EditUser" class="btn btn-success" value="Save Edit" />
+            </div>
+        </div>
+    </div>
+</div>

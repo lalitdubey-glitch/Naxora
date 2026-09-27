@@ -1,0 +1,45 @@
+﻿<div class="container py-4">
+    <form method="post" id="SignUpForm">
+        <div class="row g-3 p-4 border rounded shadow-sm bg-light">
+            <h2 class="text-success text-center text-decoration-underline">Sign Up</h2>
+            <div class="col-md-6">
+                <label for="name" class="form-label">Name<span class="text-danger">*</span></label>
+                <input type="text" name="name" id="name" class="form-control" placeholder="Enter Your Name Here" /> 
+            </div>
+
+            <div class="col-md-6">
+                <label for="email" class="form-label">Email<span class="text-danger">*</span></label>
+                <input type="email" name="email" id="email" class="form-control" placeholder="Enter Your Email" />
+            </div>
+
+            <div class="col-md-6">
+                <label for="pass" class="form-label">Password<span class="text-danger">*</span></label>
+                <input type="password" name="pass" id="pass" class="form-control" placeholder="Enter Your Password" />
+            </div>
+
+            <div class="col-md-6">
+                <label for="pincode" class="form-label">Pincode<span class="text-danger">*</span></label>
+                <input type="text" name="pincode" id="pincode" class="form-control" placeholder="Enter Your Pincode" />
+            </div>
+
+            <div class="col-md-6">
+                <label for="state" class="form-label">State</label>
+                <input type="text" name="state" id="state" class="form-control" readonly />
+            </div>
+
+            <div class="col-md-6">
+                <label for="dist" class="form-label">District</label>
+                <input type="text" name="dist" id="dist" class="form-control" readonly />
+            </div>
+
+            <div class="col-md-6">
+                <label for="vill" class="form-label">Village</label>
+                <select class="form-select" id="vill" name="vill">   </select>
+            </div>
+
+            <div class="col-12 mt-4 text-end">
+                <input type="button" id="btn_SignUp" value="Save" class="btn btn-success"/> 
+            </div>
+        </div>
+    </form>
+</div>

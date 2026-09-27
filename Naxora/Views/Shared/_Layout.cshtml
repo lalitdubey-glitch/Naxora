@@ -1,0 +1,102 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Naxora</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link href="~/lib/datatables/css/jquery.datatables.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/lib/font-awesome/all.min.css"/> 
+
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Naxora.styles.css" asp-append-version="true" />  
+    <link href="~/lib/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+</head>
+<body>
+
+    <header class="sticky-top">
+    <nav class="navbar navbar-light bg-white border-bottom box-shadow mb-3 ">
+        <div class="container-fluid d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center gap-3">
+                    <a class="navbar-brand m-0" asp-area="" asp-controller="Home" asp-action="Index">
+                        <img src="~/favicon.ico" /> Naxora 
+                   </a>
+                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+            </div>
+                
+            <div class="d-flex align-items-center gap-2">
+
+                @if (User.Identity != null && User.Identity.IsAuthenticated)
+                {
+                    <img src="~/usericon/user.gif" style="cursor:pointer;" height="40" width="40" 
+                         data-bs-toggle="offcanvas" data-bs-target="#userInfoOffcanvas" 
+                         aria-controls="userInfoOffcanvas" alt="User Profile" class="mx-3"/>
+                }
+                else
+                {
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="SignUp">SignUp</a>
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Login">Login</a>
+                }
+
+                    @if (User.IsInRole("admin"))
+                    { 
+                        <a class="nav-link" asp-area="" asp-controller="Admin" asp-action="index">  <img src="~/usericon/admin.gif" height="40px" width="40px"/></a>
+                    }
+
+                    @if (User.IsInRole("user") || User.IsInRole("admin"))
+                    {
+                        <button type="button" class="btn btn-outline-dark position-relative" data-bs-toggle="offcanvas" data-bs-target="#CartItemsOffcanvas"
+                                aria-controls="CartItemsOffcanvas" alt="Cart Items">
+                            <i class="fa-brands fa-opencart fa-float"></i>
+                            <span class="position-absolute top-0 start-0 translate-middle badge rounded-pill bg-success mx-auto" id="cartBadgeItems">
+                             0
+                            </span>
+                        </button>
+                       
+                    }
+
+
+
+            </div>
+        </div>
+    </nav>
+</header>
+ 
+    <div class="container">
+        <main role="main" class="pb-3">
+            @if (User.IsInRole("admin"))
+            {
+                @await Html.PartialAsync("_hoverLinksOfCrud")
+            }
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2026 - Naxora by Lalit Dubey
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/datatables/js/jquery.datatables.min.js"></script>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/font-awesome/all.min.js"></script> 
+     
+    <script src="~/lib/sweetalert2/sweetalert2.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script src="~/js/products.js" asp-append-version="true"></script>
+    <script src="~/js/category.js" asp-append-version="true"></script>
+    <script src="~/js/subcategory.js" asp-append-version="true"></script>
+
+    @if (User.IsInRole("admin"))
+    {
+        <script src="~/js/admin.js" asp-append-version="true"></script>
+       
+    }
+
+    @await RenderSectionAsync("Scripts", required: false)
+    @await Html.PartialAsync("_AllModalsAndOffcanvas")
+</body>
+</html>

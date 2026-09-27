@@ -1,0 +1,39 @@
+﻿<form method="post" id="SubCategoryForm">
+    <div class="col-10 col-sm-10 col-md-8 col-lg-8 mx-auto border border-1 shadow p-4 my-5">
+        <h2 class="text-decoration-underline text-center my-4">Add Sub Category</h2>
+        <input type="text" name="sid" id="sid" hidden/>
+        <select class="form-select mb-3" id="CatDDL1" name="CatDDL1">
+            <option selected disabled>--Select Category--</option>
+        </select>
+        <label for="SubCatName">Sub Category Name <span class="text-danger">*</span></label>
+        <input type="text" name="SubCatName" id="SubCatName" placeholder="Sub Category name Name" class="form-control mb-3" />
+        <label for="SubCatImg">Sub Category Image <span class="text-danger">*</span></label>
+        <input type="file" accept="image/*" name="SubCatImg" id="SubCatImg" class="form-control" />
+        <img src="#" id="SubCatPrvImg" style="display:none" class="img-thumbnail my-3" height="100px" width="100px" />
+
+        <input type="button" id="btn_AddSubCat" onclick="addEditSubCategory();" class="btn btn-success form-control my-3" value="Add Sub Category" />
+
+    </div>
+</form>
+
+<div class="container">
+    <div class="row">
+        <div class="table table-responsive ">
+            <table class="table table-hover table-active table-bordered table" id="SubCatTable">
+                <thead class="text-nowrap table-dark">
+                    <tr>
+                        <th>Sr.</th>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Image</th>
+                        <th>Category Name</th>
+                        <th>Status</th>
+                        <th>Added On</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</div>

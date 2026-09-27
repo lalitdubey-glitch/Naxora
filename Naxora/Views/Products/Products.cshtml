@@ -1,0 +1,59 @@
+﻿
+<form method="post" id="ProductForm">
+    <div class="col-10 col-sm-10 col-md-8 col-lg-8 mx-auto border border-1 shadow p-4 my-5">
+        <input type="text" id="pid" name="pid" hidden/>
+        <h2 class="text-decoration-underline text-center my-4">Add Product</h2>
+        <select class="form-select mb-3" id="CatDDL2" name="CatDDL2">
+            <option disabled selected>--Select Category--</option>
+        </select>
+        <select class="form-select mb-3" id="SubCatDDL" name="SubCatDDL">
+            <option selected disabled>--Select Sub Category--</option>
+        </select>
+        <label for="p_name">Product Name <span class="text-danger">*</span></label>
+        <input type="text" name="p_name" id="p_name" placeholder="Product Name" class="form-control mb-3" />
+        <label for="p_price">Product Price <span class="text-danger">*</span></label>
+        <input type="number" name="p_price" id="p_price" placeholder="Product Price eg: 199" class="form-control mb-3" />
+        <label for="p_discountPrice">Product Discount Price <span class="text-danger">*</span></label>
+        <input type="number" name="p_discountPrice" id="p_discountPrice" placeholder="Discount Price eg: 99" class="form-control mb-3" />
+
+        <input type="text" name="Show_p_discountPrice" id="Show_p_discountPrice" hidden placeholder="Total Discount %" readonly class="form-control mb-3" />
+
+        <input type="text" id="Show_p_discountPricePrv" placeholder="Total Discount %" disabled class="form-control mb-3" />
+
+        <label for="p_discription">Product Discription</label>
+        <textarea class="form-control mb-3" name="p_discription" id="p_discription" rows="3" placeholder="eg: This product will bost your energy"></textarea>
+        <label for="p_img">Product Image </label>
+        <input type="file" accept="image/*" name="ProductImg" id="ProductImg" class="form-control mb-3" />
+        <img src="#" id="ProductPrvImg" style="display:none" class="img-thumbnail my-3" height="100px" width="100px" />
+
+        <input type="button" id="btn_AddProduct" onclick="AddEditProduct();" class="btn btn-success form-control" value="Add Product" />
+
+    </div>
+</form>
+
+
+<div class="container">
+    <div class="row">
+        <div class="table table-responsive ">
+            <table class="table table-hover table-active table-bordered table" id="ProductTable">
+                <thead class="text-nowrap table-dark">
+                    <tr>
+                        <th>Sr.</th>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Image</th>
+                        <th>Price</th>
+                        <th>Disc Price</th>
+                        <th>Discription</th>
+                        <th>Category</th>
+                        <th>Sub Category</th>
+                        <th>Status</th>
+                        <th>Added On</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</div>

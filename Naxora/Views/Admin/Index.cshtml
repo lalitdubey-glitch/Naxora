@@ -1,0 +1,82 @@
+﻿ 
+
+ 
+
+<div class="container py-4 my-4">
+    <form method="post" id="EditUserForCrudForm" style="display:none;">
+        <div class="row g-3 p-4 border rounded shadow-sm bg-light">
+            <h2 class="text-success text-center text-decoration-underline">Edit User Details</h2>
+            <input type="text" name="uid" id="uid" hidden/>
+            <div class="col-md-6">
+                <label for="name" class="form-label">Name<span class="text-danger">*</span></label>
+                <input type="text" name="U_name" id="U_name" class="form-control" placeholder="Enter Your Name Here" />
+            </div> 
+
+            <div class="col-md-6">
+                <label for="pincode" class="form-label">Pincode<span class="text-danger">*</span></label>
+                <input type="text" name="pincode" id="pincode" class="form-control" placeholder="Enter Your Pincode" />
+            </div>
+
+            <div class="col-md-6">
+                <label for="state" class="form-label">State</label>
+                <input type="text" name="state" id="state" class="form-control" readonly />
+            </div>
+
+            <div class="col-md-6">
+                <label for="dist" class="form-label">District</label>
+                <input type="text" name="dist" id="dist" class="form-control" readonly />
+            </div>
+
+            <div class="col-md-6">
+                <label for="vill" class="form-label">Village</label>
+                <select class="form-select" id="vill" name="vill">   </select>
+            </div>
+
+            <div class="col-md-6">
+                <label for="role" class="form-label">Roles</label>
+                <select class="form-select" id="role" name="role"> 
+                    <option selected disabled>Select Role</option>    
+                    <option value="user">User</option>    
+                    <option value="admin">Admin</option>    
+                </select>
+            </div>
+
+            <div class="col-12 mt-4 text-end">
+                <input type="button" id="btn_EditUserForCrud" onclick="EditUserDetailsForAdminCrud();" value="Edit" class="btn btn-success" />
+            </div>
+        </div>
+    </form>
+</div>
+
+ 
+
+
+<div class="container">
+    <div class="row">
+      
+        <div class="table table-responsive my-4 shadow p-2 rounded-3">
+            <table class="table table-active table-bordered table table-hover rounded-3" id="userTable">
+                <thead class="table-dark text-nowrap">
+                    <tr>
+                        <th>Sr.</th>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Pincode</th>
+                        <th>State</th>
+                        <th>District</th>
+                        <th>Village</th>
+                        <th>Reg Date</th>
+                        <th>Role</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+       
+
+
+    </div>
+</div>
