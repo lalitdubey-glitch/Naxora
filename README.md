@@ -13,13 +13,13 @@ A full-stack, responsive e-commerce web application built using **ASP.NET Core M
 
 ## 📌 Table of Contents
 
-* [Tech Stack](https://www.google.com/search?q=%23-tech-stack)
-* [Overview](https://www.google.com/search?q=%23-overview)
-* [Key Features](https://www.google.com/search?q=%23-key-features)
-* [System Architecture](https://www.google.com/search?q=%23-system-architecture)
-* [Project Structure](https://www.google.com/search?q=%23-project-structure)
-* [Local Setup](https://www.google.com/search?q=%23-local-setup)
-* [Author](https://www.google.com/search?q=%23-author)
+* [Tech Stack](#-tech-stack)
+* [Overview](#-overview)
+* [Key Features](#-key-features)
+* [System Architecture](#️-system-architecture)
+* [Project Structure](#-project-structure)
+* [Local Setup](#-local-setup)
+* [Author](#-author)
 
 ---
 
