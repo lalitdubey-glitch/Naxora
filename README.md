@@ -161,8 +161,8 @@ Local app starts at `https://localhost:5001`.
 
 **Lalit Kumar Dubey**
 
-* GitHub: [@lalitdubey-glitch](https://github.com/lalitdubey-glitch?utm_source=gemini)
-* Portfolio: [lalitdubeyportfolio.netlify.app](https://www.google.com/search?q=https://lalitdubeyportfolio.netlify.app&utm_source=gemini)
+[![GitHub](https://img.shields.io/badge/GitHub-lalitdubey--glitch-181717?style=flat&logo=github)](https://github.com/lalitdubey-glitch)
+[![Portfolio](https://img.shields.io/badge/Portfolio-Visit%20Site-00C7B7?style=flat&logo=netlify)](https://lalitdubeyportfolio.netlify.app)
 
 ```
 
