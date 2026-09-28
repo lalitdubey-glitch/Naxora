@@ -1,9 +1,7 @@
 
 # 🛍️ Naxora - E-Commerce Platform
 
-[](https://naxora.runasp.net/)
- 
-[](https://github.com/lalitdubey-glitch/Naxora)
+[![Live Demo](https://img.shields.io/badge/Live_Demo-Visit_Naxora-2ea44f?style=for-the-badge&logo=googlechrome&logoColor=white)](https://naxora.runasp.net/)
 
 
 
