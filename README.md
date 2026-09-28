@@ -1,11 +1,9 @@
 
 # 🛍️ Naxora - E-Commerce Platform
 
-
-
-[
-
-](https://naxora.runasp.net/)
+[](https://naxora.runasp.net/)
+ 
+[](https://github.com/lalitdubey-glitch/Naxora)
 
 
 
@@ -17,13 +15,23 @@ A full-stack, responsive e-commerce web application built using **ASP.NET Core M
 
 ## 📌 Table of Contents
 
+* [Tech Stack](https://www.google.com/search?q=%23-tech-stack)
 * [Overview](https://www.google.com/search?q=%23-overview)
 * [Key Features](https://www.google.com/search?q=%23-key-features)
 * [System Architecture](https://www.google.com/search?q=%23-system-architecture)
-* [Tech Stack](https://www.google.com/search?q=%23-tech-stack)
 * [Project Structure](https://www.google.com/search?q=%23-project-structure)
-* [Getting Started](https://www.google.com/search?q=%23-getting-started)
+* [Local Setup](https://www.google.com/search?q=%23-local-setup)
 * [Author](https://www.google.com/search?q=%23-author)
+
+---
+
+## 💻 Tech Stack
+
+* **Backend:** C#, ASP.NET Core MVC, ADO.NET
+* **Frontend:** Razor Pages (`.cshtml`), HTML5, CSS3, JavaScript, jQuery
+* **Database:** MS SQL Server (Stored Procedures, Parameterized Queries)
+* **Asset Processing:** Server-Side Image Manipulation & Resizing
+* **Deployment:** MonsterASP.net / Custom ASP.NET Hosting
 
 ---
 
@@ -86,16 +94,6 @@ A full-stack, responsive e-commerce web application built using **ASP.NET Core M
 
 ---
 
-## 💻 Tech Stack
-
-* **Backend:** C#, ASP.NET Core MVC, ADO.NET
-* **Frontend:** Razor Pages (`.cshtml`), HTML5, CSS3, JavaScript, jQuery
-* **Database:** MS SQL Server (Stored Procedures, Parameterized Queries)
-* **Asset Processing:** Server-Side Image Manipulation & Resizing
-* **Deployment:** MonsterASP.net / Custom ASP.NET Hosting
-
----
-
 ## 📂 Project Structure
 
 ```text
@@ -124,15 +122,7 @@ naxora/
 
 ---
 
-## 🚀 Getting Started
-
-### Prerequisites
-
-* [.NET SDK](https://dotnet.microsoft.com/download?utm_source=gemini) (.NET 8.0 or your installed target version)
-* [Visual Studio 2022](https://visualstudio.microsoft.com/?utm_source=gemini) / Visual Studio Code
-* [MS SQL Server](https://www.microsoft.com/en-us/sql-server/?utm_source=gemini) & SQL Server Management Studio (SSMS)
-
-### Local Setup
+## 🚀 Local Setup
 
 1. **Clone the repository:**
 ```bash
@@ -143,7 +133,7 @@ cd Naxora
 
 
 2. **Configure Connection String:**
-Update your database credentials in `appsettings.json`:
+Update database credentials in `appsettings.json`:
 ```json
 {
   "ConnectionStrings": {
@@ -155,7 +145,7 @@ Update your database credentials in `appsettings.json`:
 
 
 3. **Database Initialization:**
-Execute your database schema creation script and stored procedures in SSMS.
+Execute database schema scripts and stored procedures in SSMS.
 4. **Build and Run:**
 ```bash
 dotnet restore
@@ -165,7 +155,7 @@ dotnet run
 ```
 
 
-Access the local web server at `https://localhost:5001`.
+Local app starts at `https://localhost:5001`.
 
 ---
 
@@ -175,5 +165,7 @@ Access the local web server at `https://localhost:5001`.
 
 * GitHub: [@lalitdubey-glitch](https://github.com/lalitdubey-glitch?utm_source=gemini)
 * Portfolio: [lalitdubeyportfolio.netlify.app](https://www.google.com/search?q=https://lalitdubeyportfolio.netlify.app&utm_source=gemini)
+
+```
 
 ```
