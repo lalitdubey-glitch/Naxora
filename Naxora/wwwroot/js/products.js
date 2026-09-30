@@ -1,7 +1,5 @@
 ﻿$(document).ready(function () {
 
-    
-
     $(document).on("click", ".btn_ProductStatus", function () {
         var pid = $(this).data("id"); 
         ChangeProductStatus(pid)
@@ -16,7 +14,7 @@
         GetOneProductById(pid)
     })
 
-    //fhilhal iska button disabled h
+
     $(document).on("click", ".btn_DeleteProduct", function () {
         var pid = $(this).data("id");
         Swal.fire({
@@ -35,6 +33,8 @@
     //cart ke ander ka delete button
     $(document).on("click", ".btn_deleteCartItems", function () {
         var pid = $(this).data("id"); 
+        var btn_PlusMinus = $(this).closest(".card").find(".btn_PlusMinus");
+
         Swal.fire({
             title: "Are You Sure?",
             text: "This action will remove product from Cart",
@@ -43,7 +43,7 @@
 
         }).then((res)=>{
             if (res.isConfirmed) {
-                DeleteProductFromCart(pid)
+                DeleteProductFromCart(pid, btn_PlusMinus)
             }
         })
     })
@@ -72,12 +72,11 @@ function ChangeProductStatus(pid) {
         error: function (xhr, status, error) {
             Swal.fire("Server Error", "Something went wrong, Please check your internet connection or Try Again Leter...!", "error")
             var err = JSON.parse(xhr.responseText)
-            console.log("Error : " + err)
+            console.log(err)
         }
     })
 }
-
-//abhi disabled h
+ 
 function DeleteProduct(pid) { 
     $.ajax({
         url: "/products/DeleteProduct",
@@ -97,19 +96,20 @@ function DeleteProduct(pid) {
         error: function (xhr, status, error) {
             Swal.fire("Server Error", "Something went wrong, Please check your internet connection or Try Again Leter...!", "error")
             var err = JSON.parse(xhr.responseText)
-            console.log("Error : " + err)
+            console.log(err)
         }
     })
 }
 
-function DeleteProductFromCart(pid) {
+function DeleteProductFromCart(pid, btnPlusMinusId) {
     $.ajax({
         url: "/products/DeleteProductFromCart",
         type: "post",
         data: { pid: pid },
         success: function (res) { 
-            if (res.success) {
+            if (res.success) { 
                 Swal.fire("Success", "Product Deleted", "success");
+                ShowHideCardPlusMinusButtons(pid, res.productQuantity, btnPlusMinusId)
             }
             else {
                 Swal.fire("Error", "Product Not Deleted " + res.ms, "error");
@@ -119,7 +119,7 @@ function DeleteProductFromCart(pid) {
         error: function (xhr, status, error) {
             Swal.fire("Server Error", "Something went wrong, Please check your internet connection or Try Again Leter...!", "error")
             var err = JSON.parse(xhr.responseText)
-            console.log("Error : " + err)
+            console.log(err)
         }
     })
 }
@@ -140,7 +140,7 @@ function OrderAll() {
         error: function (xhr, status, error) {
             Swal.fire("Server Error", "Something went wrong, Please check your internet connection or Try Again Leter...!", "error")
             var err = JSON.parse(xhr.responseText)
-            console.log("Error : " + err)
+            console.log(err)
         }
     })
 }
@@ -153,86 +153,10 @@ function selectAllProductdBySubCatId(sid) {
         type: "get",
         data: { sid: sid },
         success: function (res) {
-            if (res.data && res.data.length > 0) {
-                var showBtn = "";
-
-                $("#AllProducts").empty();
-
-                $.each(res.data, function (index, data) {
-
-                    var img = "";
-                    if (data.p_img != null) {
-                        img = `<img src="/Uploads/Products/${data.p_img}" class="card-img-top" height="150px" style="object-fit:contain;" alt="...">`
-                    }
-                    else {
-                        img = ` <img src="/userIcon/No_Image.jpg" class="card-img-top" height="150px" style="object-fit:contain" />`
-                    }
-
-                    if (data.p_quantity > 0) {
-                        showBtn = ` <div class="btn-group btn-group-sm btn_addItems" role="group" aria-label="Small button group">
-                                      <button type="button" class="btn btn-outline-primary btn_left" data-id="${data.p_id}">-</button>
-                                      <button type="button" class="btn btn-primary btn_center">${data.p_quantity}</button>
-                                      <button type="button" class="btn btn-outline-primary btn_right" data-id="${data.p_id}">+</button>
-                                    </div>
-                     `
-                    }
-                    else {
-                        showBtn = ` <button type="button" class="btn-sm btn-outline-dark  form-control btn_cart" data-id="${data.p_id}">
-                                        <i class="fa-solid fa-cart-shopping"></i>
-                                    </button> 
-                    `
-                    }
-
-                    var disabledClass = "";
-                    var Overlay = "";
-
-                    if (data.p_status == false) {
-                        disabledClass = "pe-none opacity-50";
-                        Overlay = `<div class="position-absolute top-50 start-50 translate-middle badge bg-dark fs-6" style="z-index:5;">Sold-Out</div>`;
-                    }
-
-                    $("#AllProducts").append(`
-                  <div class="col-6 col-lg-2 col-md-3 col-sm-4 mb-3">
-                    <div class="card h-100 shadow-sm position-relative">
-                        ${Overlay}
-                        <div class="${disabledClass}">
-                            ${img}
-
-                            <div class="card-body d-flex flex-column p-2">
-                                <h5 class="card-title fs-6 mb-1 text-truncate" title="${data.p_name}">${data.p_name ?? ""}</h5>
-
-                                <p class="card-text text-muted small mb-2 text-truncate" title="${data.p_discription}">
-                                    ${data.p_discription ?? "&nbsp"}
-                                </p>
-
-                                <p class="card-text mb-1 small">
-                                    Price: <span class="text-danger text-decoration-line-through"><i class="fa-solid fa-indian-rupee-sign"></i> ${data.p_price}</span>
-                                    <strong class="text-success"><i class="fa-solid fa-indian-rupee-sign"></i> ${data.p_discountPrice}</strong>
-                                </p>
-                                <p class="card-text small mb-2">Discount: ${data.p_TotalDiscountInPercentage || 0} %</p>
-
-                                <div class="row g-1 mt-auto pt-2">
-                                    <div class="col-7">
-                                       ${showBtn}
-                                    </div>
-                                    <div class="col-5">
-                                        <button type="button"
-                                                class="btn btn-outline-dark btn-sm w-100 px-0 d-flex align-items-center justify-content-center btn_buy"
-                                                style="height: 31px;"
-                                                data-id="${data.p_id}"
-                                                data-name="${data.p_name}"
-                                                data-price="${data.p_discountPrice}"
-                                                data-qty="${data.p_quantity}">
-                                           <i class="fa-brands fa-whatsapp"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                  </div>
-                `)
-                })
+            if (res.data && res.data.length > 0) { 
+                var divId = $("#AllProducts");
+                showAllProducts(res.data, divId)
+                 
             }
             else {
                 $("#AllProducts").empty().append("<h2 class='text-center m-4'>No Product</h2>");
@@ -243,7 +167,7 @@ function selectAllProductdBySubCatId(sid) {
         error: function (xhr, status, error) {
             Swal.fire("Server Error", "Something went wrong, Please check your internet connection or Try Again Leter...!", "error")
             var err = JSON.parse(xhr.responseText)
-            console.log("Error : " + err)
+            console.log(err)
         }
     })
 }
@@ -255,89 +179,9 @@ function selectAllProductdByCatId(cid) {
         type: "get",
         data: { cid: cid },
         success: function (res) {
-            if (res.data && res.data.length > 0) {
-                var showBtn = "";
-
-                $("#AllProducts").empty();
-
-                $.each(res.data, function (index, data) {
-
-                    var img = "";
-                    if (data.p_img != null) {
-                        img = `<img src="/Uploads/Products/${data.p_img}" class="card-img-top" height="150px" style="object-fit:contain;" alt="...">`
-                    }
-                    else {
-                        img = ` <img src="/userIcon/No_Image.jpg" class="card-img-top" height="150px" style="object-fit:contain" />`
-                    } 
-
-                    if (data.p_quantity > 0) {
-                        showBtn = ` <div class="btn-group btn-group-sm btn_addItems" role="group" aria-label="Small button group">
-                                      <button type="button" class="btn btn-outline-primary btn_left" data-id="${data.p_id}">-</button>
-                                      <button type="button" class="btn btn-primary btn_center">${data.p_quantity}</button>
-                                      <button type="button" class="btn btn-outline-primary btn_right" data-id="${data.p_id}">+</button>
-                                    </div>
-                     `
-                    }
-                    else {
-                        showBtn = ` <button type="button" class="btn-sm btn-outline-dark  form-control btn_cart" data-id="${data.p_id}">
-                                        <i class="fa-solid fa-cart-shopping"></i>
-                                    </button> 
-                    `
-                    }
-                     
-
-                    var disabledClass = "";
-                    var Overlay = "";
-
-                    if (data.p_status == false) {
-                        disabledClass = "pe-none opacity-50";
-                        Overlay = `<div class="position-absolute top-50 start-50 translate-middle badge bg-dark fs-6" style="z-index:5;">Sold-Out</div>`;
-                    }
-
-                   
-
-                    $("#AllProducts").append(`
-                  <div class="col-6 col-lg-2 col-md-3 col-sm-4 mb-3">
-                    <div class="card h-100 shadow-sm position-relative">
-                        ${Overlay}
-                        <div class="${disabledClass}">
-                            ${img}
-
-                            <div class="card-body d-flex flex-column p-2">
-                                <h5 class="card-title fs-6 mb-1 text-truncate" title="${data.p_name}">${data.p_name ?? ""}</h5>
-
-                                <p class="card-text text-muted small mb-2 text-truncate" title="${data.p_discription}">
-                                    ${data.p_discription ?? "&nbsp"}
-                                </p>
-
-                                <p class="card-text mb-1 small">
-                                    Price: <span class="text-danger text-decoration-line-through"><i class="fa-solid fa-indian-rupee-sign"></i> ${data.p_price}</span>
-                                    <strong class="text-success"><i class="fa-solid fa-indian-rupee-sign"></i> ${data.p_discountPrice}</strong>
-                                </p>
-                                <p class="card-text small mb-2">Discount: ${data.p_TotalDiscountInPercentage || 0} %</p>
-
-                                <div class="row g-1 mt-auto pt-2">
-                                    <div class="col-7">
-                                       ${showBtn}
-                                    </div>
-                                    <div class="col-5">
-                                        <button type="button"
-                                                class="btn btn-outline-dark btn-sm w-100 px-0 d-flex align-items-center justify-content-center btn_buy"
-                                                style="height: 31px;"
-                                                data-id="${data.p_id}"
-                                                data-name="${data.p_name}"
-                                                data-price="${data.p_discountPrice}"
-                                                data-qty="${data.p_quantity}">
-                                           <i class="fa-brands fa-whatsapp"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                  </div>
-                `)
-                })
+            if (res.data && res.data.length > 0) { 
+                var divId =  $("#AllProducts");
+                showAllProducts(res.data, divId)
             }
             else {
                 $("#AllProducts").empty().append("<h2 class='text-center m-4'>No Product</h2>");
@@ -348,7 +192,7 @@ function selectAllProductdByCatId(cid) {
         error: function (xhr, status, error) {
             Swal.fire("Server Error", "Something went wrong, Please check your internet connection or Try Again Leter...!", "error")
             var err = JSON.parse(xhr.responseText)
-            console.log("Error : " + err)
+            console.log(err)
         }
     })
 }
@@ -385,124 +229,30 @@ function GetOneProductById(pid) {
         error: function (xhr, status, error) {
             Swal.fire("Server Error", "Something went wrong, Please check your internet connection or Try Again Leter...!", "error")
             var err = JSON.parse(xhr.responseText)
-            console.log("Error : " + err)
-        }
-    })
-}
-
-function ShowCartItems() {  
-
-    $.ajax({
-        url: "/Products/ShowCartItems",
-        type: "get", 
-        success: function (res) {
-            selectAllPrdForLoggedInUser();
-            if (res.success && res.totalCartItems > 0) {
-                $("#cartBadgeItems").text(res.totalCartItems)
-                $("#CartItems").empty();
-
-                var ActionButton = "";
-                var disabledClass = "";
-                var Overlay = "";
-
-                $.each(res.data, function (index, data) { 
-                    disabledClass = "";
-                    Overlay = "";
-
-                    if (data.p_status == false) {
-                        disabledClass = "pe-none opacity-50";
-                        Overlay = `<div class="position-absolute top-50 start-50 translate-middle badge bg-dark fs-6 z-1">Sold Out</div>`;
-                    }
-
-                    //ager cart me item h to basic si baat h usme number wala badge dikhega issliye pahle se 'totalProductsCount' ki bajaye 'totalCartItems' se compare kiya kyuki jis product ka quantity 0 hoga vo cart me hoga hi nhi
-
-                    if (res.totalCartItems > 0) {
-                        ActionButton = `<div class="btn-group btn-group-sm btn_addItems" role="group" aria-label="Small button group">
-                                            <button type="button" class="btn btn-outline-primary btn_left" data-id="${data.p_id}">-</button>
-                                            <button type="button" class="btn btn-primary btn_center">${data.p_quantity}</button>
-                                            <button type="button" class="btn btn-outline-primary btn_right" data-id="${data.p_id}">+</button>
-                                        </div>`
-                    }
-                    else {
-                        ActionButton = `<button type="button" class="btn btn-outline-dark  form-control btn_cart" data-id="${data.p_id}">
-                                            <i class="fa-solid fa-cart-shopping"></i>
-                                        </button>`
-                    }
-
-                    $("#CartItems").append(`
-
-                         <div class="card mb-3 shadow-sm position-relative" style="max-width: 540px;">
-                           <button type="button" class="btn btn-danger z-3 m-3 rounded rounded-3 border border-1 p-2 top-0 end-0 position-absolute btn_deleteCartItems" data-id="${data.p_id}" ><i class="fa-solid fa-trash-can"></i></button>
-                           ${Overlay}
-                           <div class="row g-0 h-100 ${disabledClass}">
-                             <div class="col-md-4 d-flex align-items-center justify-content-center p-2">
-                               <img src="/Uploads/Products/${data.p_img}" class="img-fluid rounded-start" style="max-height: 160px; object-fit: contain;" alt="...">
-                             </div>
-                             <div class="col-md-8">
-                               <div class="card-body d-flex flex-column h-100 p-2">
-                                  <h5 class="card-title fs-6 mb-1 text-truncate" title="${data.p_name}">${data.p_name}</h5>
-
-                                
-
-                                  <p class="card-text text-muted small mb-2 text-truncate" title="${data.p_discription}">${data.p_discription}</p>
-                                  <p class="card-text mb-1 small">Price : <span class="text-danger text-decoration-line-through"> <i class="fa-solid fa-indian-rupee-sign"></i> ${data.p_price}</span>  <strong class="text-success"><i class="fa-solid fa-indian-rupee-sign"></i> ${data.p_discountPrice}</strong></p>
-                                  <p class="card-text small mb-2">Discount : ${data.p_TotalDiscountInPercentage} %</p>
-                                  <div class="row g-1 mt-auto pt-2">
-                                     <div class="col-7">
-                                         ${ActionButton}
-                                     </div>
-                                     <div class="col-5">
-                                         <button type="button"
-                                                 class="btn btn-outline-dark btn-sm w-100 px-0 d-flex align-items-center justify-content-center btn_buy"
-                                                 style="height: 31px;"
-                                                 data-id="${data.p_id}"
-                                                 data-name="${data.p_name}"
-                                                 data-price="${data.p_discountPrice}"
-                                                 data-qty="${data.p_quantity}" >
-                                            <i class="fa-brands fa-whatsapp"></i>
-                                         </button>
-                                     </div>
-                                  </div>
-                               </div>
-                             </div>
-                           </div>
-                        </div>
-                    `)
-                })
-            }
-            else {
-                $("#CartItems").empty().append("<h3>Please add item into cart to order!</h3>"); 
-                $("#cartBadgeItems").text('0')
-
-            }
-
-        },
-        error: function (xhr, status, error) {
-            Swal.fire("Server Error", "Something went wrong, Please check your internet connection or Try Again Leter...!", "error")
-            var err = JSON.parse(xhr.responseText)
-            console.log("Error : " + err)
+            console.log(err)
         }
     })
 }
 
 function btn_buy(pid) {
+   
     $.ajax({
         url: "/products/DeleteProductFromCart",
         type: "post",
         data: { pid: pid },
         success: function (res) { 
-            if (res.success) {
+            if (res.success) { 
                 Swal.fire("Success", "Order Placed!", "success");
             }
             else {
-                Swal.fire("Error", "Something Wrong" + res.ms, "error");
+                Swal.fire("Error", "Something Wrong", "error");
             }
             ShowCartItems();
         },
         error: function (xhr, status, error) {
             Swal.fire("Server Error", "Something went wrong, Please check your internet connection or Try Again Leter...!", "error")
             var err = JSON.parse(xhr.responseText)
-            console.log("Error : " + err)
+            console.log(err)
         }
     })
 }
@@ -510,7 +260,7 @@ function btn_buy(pid) {
 // Buy item one by one
 
 $(document).on("click", ".btn_buy", function () {
-
+     
     var Userid = $("#hdnUserId").val().trim();
     if (!(Userid)) {
         Swal.fire({
@@ -527,14 +277,22 @@ $(document).on("click", ".btn_buy", function () {
 
         return
     }
-
+     
     //clear the badge number
     var pid = $(this).data("id") 
-    var pQty = $(this).data("qty"); 
-
-    if (pid && pQty>0) {
+    var pQty = $(this).data("qty");
+      
+     
+    if (pid && (pQty>0)) {
         btn_buy(pid)
     }
+
+    $(`#AllProducts, #CartItems`).find(`[data-id="${pid}"]`).closest('.btn_PlusMinus').html(`
+            <button type="button" class="btn-sm btn-outline-dark form-control btn_cart" data-id="${pid}">
+                <i class="fa-solid fa-cart-shopping"></i>
+            </button>`);
+             
+
     Swal.fire("Success", "Order Placed!", "success");
     const phoneNumber = "919455648626";
     const name = $(this).data("name") || "N/A";
@@ -556,6 +314,7 @@ $(document).on("click", ".btn_buy", function () {
 
     const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
     window.open(url, "_blank");
+   
 });
  
 //Buy all Items from cart at once
@@ -580,7 +339,8 @@ $(document).on("click", "#btn_buy_all", function () {
     }
 
     //clear the badge number
-    OrderAll()
+    OrderAll();
+
 
     const phoneNumber = "919455648626";
     let itemsText = "";
@@ -588,6 +348,9 @@ $(document).on("click", "#btn_buy_all", function () {
 
     // Har product card par loop
     $("#CartItems .card").each(function (index) {
+        var pid = $(this).find("[data-id]").data("id");
+        var btnPlusMinusId = $(this).find(".btn_PlusMinus");
+
         const title = $(this).find(".card-title").text().trim();
         const qty = parseInt($(this).find(".btn_center").text().trim()) || 1;
 
@@ -598,6 +361,8 @@ $(document).on("click", "#btn_buy_all", function () {
         grandTotal += total;
 
         itemsText += `${index + 1}. *${title}*\n  *Price:* ${price}  \n  *Qty:* ${qty}  | *Total:* ₹${total}\n`;
+        ShowHideCardPlusMinusButtons(pid, pqty='0', btnPlusMinusId) 
+
     });
 
     if (grandTotal === 0) {
@@ -723,7 +488,7 @@ function AddEditProduct() {
         error: function (xhr, status, error) {
             Swal.fire("Server Error", "Something went wrong, Please check your internet connection or Try Again Leter...!", "error")
             var err = JSON.parse(xhr.responseText)
-            console.log("Error : " + err)
+            console.log(err)
         },
         complete: function () {
             $("#btn_AddProduct").prop("disabled", false)
@@ -773,7 +538,7 @@ function GetAllProductsForTable() {
                                  </div>
                             </td>
                             <td>${data.p_addDate.split("T")[0] ?? ""}</td>
-                            <td>
+                            <td class='text-nowrap'>
                                    <button type="button" class="btn btn-success btn_EditProduct" data-id="${data.p_id}"><i class="fa-solid fa-wand-magic-sparkles"></i> </button>
                             <button type="button" value="Delete" class="btn btn-danger btn_DeleteProduct" data-id="${data.p_id}"><i class="fa-solid fa-trash-can"></i></button> 
                             </td>
@@ -784,92 +549,138 @@ function GetAllProductsForTable() {
             } 
 
             $('#ProductTable').DataTable();
-
-            //GetAllSubCategoryForTable();
+             
         },
         error: function (xhr, status, error) {
             Swal.fire("Server Error", "Something went wrong, Please check your internet connection or Try Again Leter...!", "error")
             var err = JSON.parse(xhr.responseText)
-            console.log("Error : " + err)
+            console.log(err)
         }
 
     })
 }
 
-function selectAllPrdForLoggedInUser() {
+
+function ShowCartItems() {
+
     $.ajax({
-        url: "/Products/selectAllPrdForLoggedInUser",
+        url: "/Products/ShowCartItems",
         type: "get",
         success: function (res) {
-            if (res.success && res.data.length > 0) {
-                var showBtn = "";
+            if (res.success && res.totalCartItems > 0) {
+                $("#cartBadgeItems").text(res.totalCartItems)
 
-                $("#AllProducts").empty();
-                $.each(res.data, function (index, data) {
+                var data = res.data; 
+                var divId = $("#CartItems");
+                 
+                showAllProducts(data, divId)
 
-                    var img = "";
-                    if (data.p_img != null) {
-                        img = `<img src="/Uploads/Products/${data.p_img}" class="card-img-top" height="150px" style="object-fit:contain;" alt="...">`
-                    }
-                    else {
-                        img = ` <img src="/userIcon/No_Image.jpg" class="card-img-top" height="150px" style="object-fit:contain" />`
-                    }
+            }
+            else {
+                $("#CartItems").empty().append("<h3>Please add item into cart to order!</h3>");
+                $("#cartBadgeItems").text('0')
 
-                    if (data.p_quantity > 0) {
-                        showBtn = ` <div class="btn-group btn-group-sm btn_addItems" role="group" aria-label="Small button group">
-                                      <button type="button" class="btn btn-outline-primary btn_left" data-id="${data.p_id}">-</button>
-                                      <button type="button" class="btn btn-primary btn_center">${data.p_quantity}</button>
-                                      <button type="button" class="btn btn-outline-primary btn_right" data-id="${data.p_id}">+</button>
+            }
+
+        },
+        error: function (xhr, status, error) {
+            Swal.fire("Server Error", "Something went wrong, Please check your internet connection or Try Again Leter...!", "error")
+            var err = JSON.parse(xhr.responseText)
+            console.log(err)
+        }
+    })
+}
+
+ 
+
+function showAllProducts(data, divId) {
+    
+    var showBtn = "";
+    var img = ""; 
+    divId.empty();
+    $.each(data, function (index, UserData) {
+
+        var btnDelete = "";
+
+        if (divId.closest("#CartItemsOffcanvas").length > 0) {
+           
+            divStyle = '<div class="col-11 border border-1 p-1 rounded-3 shadow m-3">'
+
+            if (UserData.cart_id) {
+                btnDelete = ` <button type="button" class="btn btn-danger z-3 m-3 rounded-3 border border-1 p-2 top-0 end-0 position-absolute btn_deleteCartItems" data-id="${UserData.p_id}" ><i class="fa-solid fa-trash-can"></i></button>`
+            }
+
+            
+        }
+        else {
+            divStyle = '<div class="col-6 col-lg-2 col-md-3 col-sm-4 mb-3">'
+        }
+
+        if (UserData.p_img != null) {
+            img = `<img src="/Uploads/Products/${UserData.p_img}" class="card-img-top" height="150px" style="object-fit:contain;" alt="...">`
+        }
+        else {
+            img = ` <img src="/userIcon/No_Image.jpg" class="card-img-top" height="150px" style="object-fit:contain" />`
+        }
+
+        if (UserData.p_quantity > 0) {
+            showBtn = ` <div class="btn-group btn-group-sm btn_addItems" role="group" aria-label="Small button group">
+                                      <button type="button" class="btn btn-outline-primary btn_left" data-id="${UserData.p_id}">-</button>
+                                      <button type="button" class="btn btn-primary btn_center">${UserData.p_quantity}</button>
+                                      <button type="button" class="btn btn-outline-primary btn_right" data-id="${UserData.p_id}">+</button>
                                     </div>
                      `
-                    }
-                    else {
-                        showBtn = ` <button type="button" class="btn-sm btn-outline-dark  form-control btn_cart" data-id="${data.p_id}">
+        }
+        else {
+            showBtn = ` <button type="button" class="btn-sm btn-outline-dark  form-control btn_cart" data-id="${UserData.p_id}">
                                         <i class="fa-solid fa-cart-shopping"></i>
-                                    </button> 
+                                    </button>
                     `
-                    }
-                    
-                    var disabledClass = "";
-                    var Overlay = "";
+        }
+         
+        var disabledCard = "";
+        var Overlay = "";
+         
+        if (UserData.p_status === false) {
+            disabledCard = "pe-none opacity-50";
+            Overlay = `<div class="position-absolute top-50 start-50 translate-middle badge bg-dark fs-6" style="z-index:5;">Sold-Out</div>`;
+        }
 
-                    if (data.p_status == false) {
-                        disabledClass = "pe-none opacity-50";
-                        Overlay = `<div class="position-absolute top-50 start-50 translate-middle badge bg-dark fs-6" style="z-index:5;">Sold Out</div>`;
-                    }
-
-                    $("#AllProducts").append(`
-                  <div class="col-6 col-lg-2 col-md-3 col-sm-4 mb-3">
+        divId.append(`
+                  ${divStyle}
                     <div class="card h-100 shadow-sm position-relative">
                         ${Overlay}
-                        <div class="${disabledClass}">
+                        <div class="${disabledCard}">
+
                             ${img}
 
-                            <div class="card-body d-flex flex-column p-2">
-                                <h5 class="card-title fs-6 mb-1 text-truncate" title="${data.p_name}">${data.p_name ?? ""}</h5>
+                            ${btnDelete}
 
-                                <p class="card-text text-muted small mb-2 text-truncate" title="${data.p_discription}">
-                                    ${data.p_discription ?? "&nbsp"}
+                            <div class="card-body d-flex flex-column p-2">
+                                <h5 class="card-title fs-6 mb-1 text-truncate" title="${UserData.p_name}">${UserData.p_name ?? ""}</h5>
+
+                                <p class="card-text text-muted small mb-2 text-truncate" title="${UserData.p_discription}">
+                                    ${UserData.p_discription ?? "&nbsp"}
                                 </p>
 
                                 <p class="card-text mb-1 small">
-                                    Price: <span class="text-danger text-decoration-line-through"><i class="fa-solid fa-indian-rupee-sign"></i> ${data.p_price}</span>
-                                    <strong class="text-success"><i class="fa-solid fa-indian-rupee-sign"></i> ${data.p_discountPrice}</strong>
+                                    Price: <span class="text-danger text-decoration-line-through"><i class="fa-solid fa-indian-rupee-sign"></i> ${UserData.p_price}</span>
+                                    <strong class="text-success"><i class="fa-solid fa-indian-rupee-sign"></i> ${UserData.p_discountPrice}</strong>
                                 </p>
-                                <p class="card-text small mb-2">Discount: ${data.p_TotalDiscountInPercentage || 0} %</p>
+                                <p class="card-text small mb-2">Discount: ${UserData.p_TotalDiscountInPercentage || 0} %</p>
 
                                 <div class="row g-1 mt-auto pt-2">
-                                    <div class="col-7">
+                                    <div class="col-7 btn_PlusMinus">
                                        ${showBtn}
                                     </div>
                                     <div class="col-5">
                                         <button type="button"
                                                 class="btn btn-outline-dark btn-sm w-100 px-0 d-flex align-items-center justify-content-center btn_buy"
-                                                style="height:30px;"
-                                                data-id="${data.p_id}"
-                                                data-name="${data.p_name}"
-                                                data-price="${data.p_discountPrice}"
-                                                data-qty="${data.p_quantity}">
+                                                style="height: 31px;"
+                                                data-id="${UserData.p_id}"
+                                                data-name="${UserData.p_name}"
+                                                data-price="${UserData.p_discountPrice}"
+                                                data-qty="${UserData.p_quantity}">
                                            <i class="fa-brands fa-whatsapp"></i>
                                         </button>
                                     </div>
@@ -879,7 +690,20 @@ function selectAllPrdForLoggedInUser() {
                     </div>
                   </div>
                 `)
-                })
+    })
+
+}
+
+function selectAllPrdForLoggedInUser() {
+    $.ajax({
+        url: "/Products/selectAllPrdForLoggedInUser",
+        type: "get",
+        success: function (res) {
+            if (res.success && res.data.length > 0) { 
+                var divId = $("#AllProducts");
+                var data = res.data;
+                showAllProducts(data, divId);
+                 
             }
             else {
                 `<h3>No Product Found</h3>`
@@ -888,8 +712,9 @@ function selectAllPrdForLoggedInUser() {
         error: function (xhr, status, error) {
             Swal.fire("Server Error", "Something went wrong, Please check your internet connection or Try Again Leter...!", "error")
             var err = JSON.parse(xhr.responseText)
-            console.log("Error : " + err)
+            console.log(err)
         }
 
     })
 }
+ 

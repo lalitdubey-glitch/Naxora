@@ -62,7 +62,7 @@ function ChangeUserStatus(uid) {
         error: function (xhr, status, error) {
             Swal.fire("Server Error", "Something went wrong, Please check your internet connection or Try Again Leter...!", "error")
             var err = JSON.parse(xhr.responseText)
-            console.log("Error : " + err)
+            console.log(err)
         }
 
     })
@@ -85,7 +85,7 @@ function DeleteUser(uid) {
         error: function (xhr, status, error) {
             Swal.fire("Server Error", "Something went wrong, Please check your internet connection or Try Again Leter...!", "error")
             var err = JSON.parse(xhr.responseText)
-            console.log("Error : " + err)
+            console.log(err)
         }
 
     })
@@ -138,7 +138,7 @@ function getAllUsers() {
         error: function (xhr, status, error) {
             Swal.fire("Server Error", "Something went wrong, Please check your internet connection or Try Again Leter...!", "error")
             var err = JSON.parse(xhr.responseText)
-            console.log("Error : " + err)
+            console.log(err)
         }
        
 
@@ -164,8 +164,7 @@ function getOneUsersById(uid) {
         },
         success: function (res) {
             if (res.success && res.data.length > 0) {
-                Swal.fire("Info", "User Found", "success")
-                console.log(res.data)
+                Swal.fire("Info", "User Found", "success") 
                 $.each(res.data, function (index, data) {
 
                     $("#uid").val(data.u_id ?? "") 
@@ -188,7 +187,7 @@ function getOneUsersById(uid) {
         error: function (xhr, status, error) {
             Swal.fire("Server Error" ,  "Something went wrong, Please check your internet connection or Try Again Leter...!" , "error")
             var err = JSON.parse(xhr.responseText)
-            console.log("Error : " + err)
+            console.log(err)
         },
         complete: function () {
             //Swal.close();
@@ -238,7 +237,7 @@ function EditUserDetailsForAdminCrud() {
         error: function (xhr, status, error) {
             Swal.fire("Server Error" ,  "Something went wrong, Please check your internet connection or Try Again Leter...!" , "error")
             var err = JSON.parse(xhr.responseText)
-            console.log("Error : " + err)
+            console.log(err)
         },
         complete: function () {
             //Swal.close();

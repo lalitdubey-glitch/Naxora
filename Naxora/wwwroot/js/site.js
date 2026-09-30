@@ -1,6 +1,12 @@
 ﻿$(document).ready(function () {  
 
-    GetLoggedInUser(); 
+    if ($("#hdnUserId")) {
+     GetLoggedInUser(); 
+    }
+
+    //ager user Login nhi hoga to normal products dikhenge cart me koi item added nhi hoga
+    selectAllPrdForLoggedInUser()
+
     GetAllCategory(); 
     ShowCartItems();
 
@@ -19,43 +25,26 @@
         $("#AllSubCategory").empty();
         selectAllPrdForLoggedInUser();
     }) 
-    
+     
 
-    //Plus Button (+) 
-    $(document).on("click", ".btn_right", function () { 
-        var btnCenter = $(this).siblings(".btn_center"); 
+    // Plus Button (+)  
+    $(document).on("click", ".btn_right", function () {
         var p_id = $(this).data("id");
-        var count = parseInt(btnCenter.text().trim(), 10) || 0;
-        count++;   
-        btnCenter.text(count);
-
-        AddItemToCarts(p_id);
-        
+        var btnPlusMinus = $(this).closest(".card").find(".btn_PlusMinus")
+        AddItemToCarts(p_id, btnPlusMinus);
     });
 
-    //Minus Button (-) 
-    $(document).on("click", ".btn_left", function () { 
-        var btnCenter = $(this).siblings(".btn_center");
-        var count = parseInt(btnCenter.text().trim(), 10) || 0;
+    // Minus Button (-)  
+    $(document).on("click", ".btn_left", function () {
         var p_id = $(this).data("id");
-        if (count > 1) {
-            count--;  
-            btnCenter.text(count);
-        }
-        else { 
-            var btnGroup = $(this).closest(".btn_addItems"); 
-            btnGroup.addClass("d-none");
-            btnGroup.siblings(".btn_cart").removeClass("d-none");
-            btnCenter.text(1);
-        }
-        
-            BtnMinus(p_id) 
-
+        var btnPlusMinus = $(this).closest(".card").find(".btn_PlusMinus")
+        BtnMinus(p_id, btnPlusMinus);
     });
 
     $(document).on("click", ".btn_cart", function () { 
-        var p_id = $(this).data("id");
-        var clickedBtn = $(this);
+
+        var p_id = $(this).data("id"); 
+
         var userId = $("#hdnUserId").val(); 
         if (!userId) {
             Swal.fire({
@@ -74,10 +63,35 @@
 
         }
 
-        $(this).addClass('d-none')
-        $(this).parent().find(".btn_addItems").removeClass('d-none');
-        AddItemToCarts(p_id);  
+        $(this).hide()
+        var btnPlusMinus = $(this).closest(".card").find(".btn_PlusMinus") 
+
+        AddItemToCarts(p_id, btnPlusMinus) 
     })
+     
+
+    function AddItemToCarts(p_id, btnPlusMinusId) {
+        $.ajax({
+            url: "/Products/AddCart",
+            type: "post",
+            data: { p_id: p_id },
+            success: function (res) {
+                if (res.success) {
+                    ShowHideCardPlusMinusButtons(p_id, res.productQuantity, btnPlusMinusId)
+                    ShowCartItems();
+                }
+                else {
+                    Swal.fire("Info", "Product Not Added", "info")
+                }
+            },
+            error: function (xhr, status, error) {
+                Swal.fire("Server Error", "Something went wrong, Please check your internet connection or Try Again Leter...!", "error")
+                var err = JSON.parse(xhr.responseText)
+                console.log(err)
+            }
+
+        })
+    }
 
     
 
@@ -145,7 +159,7 @@
             error: function (xhr, status, error) {
                 Swal.fire("Server Error", "Something went wrong, Please check your internet connection or Try Again Leter...!", "error")
                 var err = JSON.parse(xhr.responseText)
-                console.log("Error : " + err)
+                console.log(err)
             },
             complete: function () {
                 $("#btn_SignUp").prop("disabled", false);
@@ -197,7 +211,7 @@
             error: function (xhr, status, error) {
                 Swal.fire("Server Error", "Something went wrong, Please check your internet connection or Try Again Leter...!", "error")
                 var err = JSON.parse(xhr.responseText)
-                console.log("Error : " + err)
+                console.log(err)
             },
             complete: function () {
                 $("#btn_Login").prop("disabled", false);
@@ -242,7 +256,7 @@
             error: function (xhr, status, error) {
                 Swal.fire("Server Error", "Something went wrong, Please check your internet connection or Try Again Leter...!", "error")
                 var err = JSON.parse(xhr.responseText)
-                console.log("Error : " + err)
+                console.log(err)
             },
             complete: function () {
                 $("#btn_sendOTP").prop("disabled", false);
@@ -286,7 +300,7 @@
             error: function (xhr, status, error) {
                 Swal.fire("Server Error", "Something went wrong, Please check your internet connection or Try Again Leter...!", "error")
                 var err = JSON.parse(xhr.responseText)
-                console.log("Error : " + err)
+                console.log(err)
             },
             complete: function () {
                 $("#btn_VerifyOTP").prop("disabled", false);
@@ -331,7 +345,7 @@
             error: function (xhr, status, error) {
                 Swal.fire("Server Error", "Something went wrong, Please check your internet connection or Try Again Leter...!", "error")
                 var err = JSON.parse(xhr.responseText)
-                console.log("Error : " + err)
+                console.log(err)
             }
         })
     })
@@ -397,7 +411,7 @@
             error: function (xhr, status, error) {
                 Swal.fire("Server Error", "Something went wrong, Please check your internet connection or Try Again Leter...!", "error")
                 var err = JSON.parse(xhr.responseText)
-                console.log("Error : " + err)
+                console.log(err)
             },
             complete: function () {
                 $("#btn_EditUser").prop("disabled", false);
@@ -445,7 +459,7 @@ function GetDetailsForEdit() {
         error: function (xhr, status, error) {
             Swal.fire("Server Error", "Something went wrong, Please check your internet connection or Try Again Leter...!", "error")
             var err = JSON.parse(xhr.responseText)
-            console.log("Error : " + err)
+            console.log(err)
         }
 
     })
@@ -477,7 +491,7 @@ function GetLoggedInUser() {
         error: function (xhr, status, error) {
             Swal.fire("Server Error", "Something went wrong, Please check your internet connection or Try Again Leter...!", "error")
             var err = JSON.parse(xhr.responseText)
-            console.log("Error : " + err)
+            console.log(err)
         }
 
     })
@@ -523,7 +537,7 @@ function Pincode(pincode, seletedVill=null) {
         error: function (xhr, status, error) {
             Swal.fire("Server Error", "Something went wrong, Please check your internet connection or Try Again Leter...!", "error")
             var err = JSON.parse(xhr.responseText)
-            console.log("Error : " + err)
+            console.log(err)
         },
         complete: function () {
             //Swal.close();
@@ -541,39 +555,39 @@ function ImagePreview(img_Id, prvImg_Id) {
     })
 } 
 
-function AddItemToCarts(productId, e) {
-    //e.preventDefault();
-    $.ajax({
-        url: "/Products/AddCart",
-        type: "post",
-        data: { p_id: productId },
-        success: function (res) {
-            if (res.success) {
-                ShowCartItems();
-            }
-            else {
-                Swal.fire("Info" , "Product Not Added" , "info")
-            }
-        },
-        error: function (xhr, status, error) {
-            Swal.fire("Server Error", "Something went wrong, Please check your internet connection or Try Again Leter...!", "error")
-            var err = JSON.parse(xhr.responseText)
-            console.log("Error : " + err)
-        }
+function ShowHideCardPlusMinusButtons(p_id, productQuantity, btnPlusMinusId) {
+    var buttonHtml = "";
+     
+    if (productQuantity > 0) {
+        buttonHtml = `
+            <div class="btn-group btn-group-sm btn_addItems" role="group" aria-label="Small button group">
+                <button type="button" class="btn btn-outline-primary btn_left" data-id="${p_id}">-</button>
+                <button type="button" class="btn btn-primary btn_center">${productQuantity}</button>
+                <button type="button" class="btn btn-outline-primary btn_right" data-id="${p_id}">+</button>
+            </div>`;
+    } else {
+        buttonHtml = `
+            <button type="button" class="btn-sm btn-outline-dark form-control btn_cart" data-id="${p_id}">
+                <i class="fa-solid fa-cart-shopping"></i>
+            </button>`;
+    }
 
-    })
+    
+     
+    $(`#AllProducts, #CartItems`).find(`[data-id="${p_id}"]`).closest('.btn_PlusMinus').html(buttonHtml);
+    $(`#AllProducts, #CartItems`).find(`[data-id="${p_id}"]`).closest('.card').find('.btn_buy').attr('data-qty', productQuantity);
+ 
 }
 
-function BtnMinus(productId,e) {
-   //e.preventDefault();
-
+function BtnMinus(p_id, btnPlusMinusId) { 
     $.ajax({
         url: "/Products/BtnMinus",
         type: "post",
-        data: { p_id: productId },
+        data: { p_id: p_id },
         success: function (res) { 
             if (res.success) {
-                ShowCartItems();
+                ShowHideCardPlusMinusButtons(p_id, res.productQuantity, btnPlusMinusId)
+                ShowCartItems(); 
             } 
             else {
                 Swal.fire("Info", "Product Not Found", "info")
@@ -583,7 +597,7 @@ function BtnMinus(productId,e) {
         error: function (xhr, status, error) {
             Swal.fire("Server Error", "Something went wrong, Please check your internet connection or Try Again Leter...!", "error")
             var err = JSON.parse(xhr.responseText)
-            console.log("Error : " + err)
+            console.log(err)
         }
 
     })

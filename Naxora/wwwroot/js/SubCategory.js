@@ -1,7 +1,4 @@
-﻿ 
-$(document).ready(function () {
-
-   
+﻿$(document).ready(function () {
 
     $(document).on("click", ".btn_editSubCat", function () {
         var sid = $(this).data("id")
@@ -51,7 +48,7 @@ function changeSubCatStatus(sid) {
         error: function (xhr, status, error) {
             Swal.fire("Server Error", "Something went wrong, Please check your internet connection or Try Again Leter...!", "error")
             var err = JSON.parse(xhr.responseText)
-            console.log("Error : " + err)
+            console.log(err)
         }
 
     })
@@ -73,7 +70,7 @@ function deleteSubCategory(sid) {
         error: function (xhr, status, error) {
             Swal.fire("Server Error", "Something went wrong, Please check your internet connection or Try Again Leter...!", "error")
             var err = JSON.parse(xhr.responseText)
-            console.log("Error : " + err)
+            console.log(err)
         }
 
     })
@@ -93,7 +90,7 @@ function getOneSubCatById(sid) {
         error: function (xhr, status, error) {
             Swal.fire("Server Error", "Something went wrong, Please check your internet connection or Try Again Leter...!", "error")
             var err = JSON.parse(xhr.responseText)
-            console.log("Error : " + err)
+            console.log(err)
         }
 
     })
@@ -161,7 +158,7 @@ function addEditSubCategory() {
         error: function (xhr, status, error) {
             Swal.fire("Server Error", "Something went wrong, Please check your internet connection or Try Again Leter...!", "error")
             var err = JSON.parse(xhr.responseText)
-            console.log("Error : " + err)
+            console.log(err)
         },
         complete: function () {
             $("#btn_AddSubCat").prop("disabled", false)
@@ -207,7 +204,7 @@ function GetAllSubCategoryByCatId(c_id) {
         error: function (xhr, status, error) {
             Swal.fire("Server Error", "Something went wrong, Please check your internet connection or Try Again Leter...!", "error")
             var err = JSON.parse(xhr.responseText)
-            console.log("Error : " + err)
+            console.log(err)
         }
     })
 }
@@ -248,7 +245,7 @@ function GetAllSubCategoryForTable() {
                              </div>
                         </td>
                         <td>${data.subCat_Adddate.split("T")[0] ?? ""}</td>
-                        <td>
+                        <td class='text-nowrap'>
                             <button type="button" class="btn btn-success btn_editSubCat" data-id="${data.subCat_id}"><i class="fa-solid fa-wand-magic-sparkles"></i> </button>
                             <button type="button" value="Delete" class="btn btn-danger btn_deleteSubCat" data-id="${data.subCat_id}"><i class="fa-solid fa-trash-can"></i></button>
                            
@@ -262,7 +259,7 @@ function GetAllSubCategoryForTable() {
         error: function (xhr, status, error) {
             Swal.fire("Server Error", "Something went wrong, Please check your internet connection or Try Again Leter...!", "error")
             var err = JSON.parse(xhr.responseText)
-            console.log("Error : " + err)
+            console.log(err)
             
         }
 
@@ -288,7 +285,7 @@ function GetAllSubCategoryForDDL(c_id , callback) {
         error: function (xhr, status, error) {
             Swal.fire("Server Error", "Something went wrong, Please check your internet connection or Try Again Leter...!", "error")
             var err = JSON.parse(xhr.responseText)
-            console.log("Error : " + err)
+            console.log(err)
         }
 
     })

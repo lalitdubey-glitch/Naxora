@@ -51,7 +51,7 @@ function changeStatus(cid) {
         error: function (xhr, status, error) {
             Swal.fire("Server Error", "Something went wrong, Please check your internet connection or Try Again Leter...!", "error")
             var err = JSON.parse(xhr.responseText)
-            console.log("Error : " + err)
+            console.log(err)
         }
     })
 }
@@ -74,7 +74,7 @@ function deleteCategory(cid) {
         error: function (xhr, status, error) {
             Swal.fire("Server Error", "Something went wrong, Please check your internet connection or Try Again Leter...!", "error")
             var err = JSON.parse(xhr.responseText)
-            console.log("Error : " + err)
+            console.log(err)
         }
     })
 }
@@ -106,7 +106,7 @@ function GetCatById(cid) {
         error: function (xhr, status, error) {
             Swal.fire("Server Error", "Something went wrong, Please check your internet connection or Try Again Leter...!", "error")
             var err = JSON.parse(xhr.responseText)
-            console.log("Error : " + err)
+            console.log(err)
         },
         complete: function () {
             Swal.close();
@@ -167,7 +167,7 @@ function addEditCategory() {
         error: function (xhr, status, error) {
             Swal.fire("Server Error", "Something went wrong, Please check your internet connection or Try Again Leter...!", "error")
             var err = JSON.parse(xhr.responseText)
-            console.log("Error : " + err)
+            console.log(err)
         },
         complete: function () {
             $("#btn_AddCat").prop("disabled", false)
@@ -214,7 +214,7 @@ function GetAllCategoryForTable() {
                                 </div>
                             </td>
                             <td> ${data.c_addDate.split("T")[0]??""} </td> 
-                            <td> 
+                            <td class='text-nowrap'> 
                                 <button type="button" class="btn btn-success btn_editCat" data-id="${data.c_id}"><i class="fa-solid fa-wand-magic-sparkles"></i> </button>
                                 <button type="button" class="btn btn-danger btn_deleteCat" data-id="${data.c_id}"><i class="fa-solid fa-trash-can"></i></button> 
                             </td>  
@@ -228,7 +228,7 @@ function GetAllCategoryForTable() {
         error: function (xhr, status, error) {
             Swal.fire("Server Error", "Something went wrong, Please check your internet connection or Try Again Leter...!", "error")
             var err = JSON.parse(xhr.responseText)
-            console.log("Error : " + err)
+            console.log(err)
         }
     })
 }
@@ -247,7 +247,7 @@ function GetAllCategoryForDDL(CategoryDDLName) {
         error: function (xhr, status, error) {
             Swal.fire("Server Error", "Something went wrong, Please check your internet connection or Try Again Leter...!", "error")
             var err = JSON.parse(xhr.responseText)
-            console.log("Error : " + err)
+            console.log(err)
         }
     })
 }
@@ -285,7 +285,7 @@ function GetAllCategory() {
         error: function (xhr, status, error) {
             Swal.fire("Server Error", "Something went wrong, Please check your internet connection or Try Again Leter...!", "error")
             var err = JSON.parse(xhr.responseText)
-            console.log("Error : " + err)
+            console.log(err)
         }
     })
 }

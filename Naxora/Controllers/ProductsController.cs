@@ -679,7 +679,7 @@ namespace Naxora.Controllers
                 {
                     Direction = ParameterDirection.Output
                 }; 
-                SqlParameter TotalProducts = new SqlParameter("@TotalProducts", SqlDbType.Int)
+                SqlParameter QuantityOfThisProduct = new SqlParameter("@TotalProducts", SqlDbType.Int)
                 {
                     Direction = ParameterDirection.Output
                 }; 
@@ -692,16 +692,16 @@ namespace Naxora.Controllers
                     new SqlParameter("@p_quantity" , "1"),
                     new SqlParameter("@status" , "1"),
                     CartCount,
-                    TotalProducts
+                    QuantityOfThisProduct
 
                 });
-
-                int? TotalCartItems = Convert.ToInt32(CartCount?.Value ?? 0); 
-                int? TotalProductsCount = Convert.ToInt32(TotalProducts?.Value ?? 0); 
+                 
+                int TotalCartItems = CartCount?.Value == DBNull.Value ? 0 : Convert.ToInt32(CartCount?.Value ?? 0);
+                int ProductQuantity = QuantityOfThisProduct?.Value == DBNull.Value ? 0 : Convert.ToInt32(QuantityOfThisProduct?.Value ?? 0);
 
                 if (res > 0)
                 {
-                    return Json(new { success = true , userId  = userId , totalCartItems= TotalCartItems, totalProductsCount = TotalProductsCount });
+                    return Json(new { success = true , userId  = userId , totalCartItems= TotalCartItems, productQuantity = ProductQuantity });
                 }
                 return Json(new { success = false});
             }
@@ -785,7 +785,7 @@ namespace Naxora.Controllers
                     Direction = ParameterDirection.Output
                 };
 
-                SqlParameter TotalProducts = new SqlParameter("@TotalProducts", SqlDbType.Int)
+                SqlParameter QuantityOfThisProduct = new SqlParameter("@TotalProducts", SqlDbType.Int)
                 {
                     Direction = ParameterDirection.Output
                 };
@@ -796,17 +796,16 @@ namespace Naxora.Controllers
                     new SqlParameter("@U_id" , userId ??(object)DBNull.Value ), 
                     new SqlParameter("@p_id" , pid??(object)DBNull.Value), 
                     CartCount,
-                    TotalProducts
+                    QuantityOfThisProduct
 
                 });
 
                 int TotalCartItems = CartCount?.Value == DBNull.Value ? 0 : Convert.ToInt32(CartCount?.Value ?? 0);
-
-                int TotalProductsCount = TotalProducts?.Value == DBNull.Value ? 0 : Convert.ToInt32(TotalProducts?.Value ?? 0);
+                int ProductQuantity = QuantityOfThisProduct?.Value == DBNull.Value ? 0 : Convert.ToInt32(QuantityOfThisProduct?.Value ?? 0);
 
                 if (res > 0)
                 {
-                    return Json(new { success = true , TotalCartItems= TotalCartItems, totalProductsCount = TotalProductsCount });
+                    return Json(new { success = true , TotalCartItems= TotalCartItems, productQuantity = ProductQuantity });
                 }
                 return Json(new { success = false});
             }
@@ -829,7 +828,7 @@ namespace Naxora.Controllers
                     Direction = ParameterDirection.Output
                 };
 
-                SqlParameter TotalProducts = new SqlParameter("@TotalProducts", SqlDbType.Int)
+                SqlParameter QuantityOfThisProduct = new SqlParameter("@TotalProducts", SqlDbType.Int)
                 {
                     Direction = ParameterDirection.Output
                 };
@@ -840,16 +839,16 @@ namespace Naxora.Controllers
                     new SqlParameter("@U_id" , userId ??(object)DBNull.Value ), 
                     new SqlParameter("@p_id" , p_id??(object)DBNull.Value), 
                     CartCount,
-                    TotalProducts
+                    QuantityOfThisProduct
 
                 });
-
-                int? TotalCartItems = Convert.ToInt32(CartCount?.Value ?? 0);
-                int? TotalProductsCount = Convert.ToInt32(TotalProducts?.Value ?? 0);
+                 
+                int TotalCartItems = CartCount?.Value == DBNull.Value ? 0 : Convert.ToInt32(CartCount?.Value ?? 0);
+                int ProductQuantity = QuantityOfThisProduct?.Value == DBNull.Value ? 0 : Convert.ToInt32(QuantityOfThisProduct?.Value ?? 0);
 
                 if (res > 0)
                 {
-                    return Json(new { success = true , totalCartItems= TotalCartItems, totalProductsCount = TotalProductsCount });
+                    return Json(new { success = true , totalCartItems= TotalCartItems, productQuantity = ProductQuantity });
                 }
                 return Json(new { success = false});
             }
