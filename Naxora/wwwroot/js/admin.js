@@ -96,9 +96,14 @@ function getAllUsers() {
         url: "/admin/GetAllUsers",
         type: "get", 
         success: function (res) {
+            if ($.fn.DataTable.isDataTable('#userTable')) {
+                $('#userTable').DataTable().destroy();
+            }
+
+            var tableBody = $("#userTable tbody");
+            tableBody.empty();
+
             if (res.success && res.data.length > 0) {
-                var tableBody = $("#userTable tbody");
-                tableBody.empty();
 
                 $.each(res.data, function (index, data) { 
                     tableBody.append(
@@ -129,7 +134,8 @@ function getAllUsers() {
                     )
                     
                 }) 
-                $('#userTable').DataTable({ destroy: true });
+
+                $('#userTable').DataTable();
             }
             else {
                 Swal.fire("Info" , "Data Not Found" , "info")
